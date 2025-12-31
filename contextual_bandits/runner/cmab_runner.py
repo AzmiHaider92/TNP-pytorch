@@ -293,7 +293,9 @@ def eval(args, models):
     freq, duration = log_results(args, models, opt_rewards, opt_actions, h_rewards, t_init)
     results = [[model.name for model in models], h_actions, h_rewards, opt_actions, opt_rewards, freq, duration]
 
-    np.save(osp.join(path, filename), results, allow_pickle=True)
+    #np.save(osp.join(path, filename), results, allow_pickle=True)
+    results_obj = np.array(results, dtype=object)
+    np.save(osp.join(path, filename), results_obj, allow_pickle=True)
 
 
 def plot(args, names):
@@ -313,7 +315,9 @@ def plot(args, names):
                     folder += f"x{args.cmab_train_num_batches}"
 
             folder += f"-{args.cmab_eval_method}"
-            results = np.load(osp.join(path, folder, f"{filename}.npy"), allow_pickle=True)
+            #results = np.load(osp.join(path, folder, f"{filename}.npy"), allow_pickle=True)
+            loaded = np.load(osp.join(path, folder, f"{filename}.npy"), allow_pickle=True)
+            results = loaded.tolist()  # back to the original Python list structure
             dataset, a, r, opt_a, opt_r, time, freq = results  # [N,1], [N,]
             _rewards.append(r[:, 0])  # [N,]
             _regrets.append(opt_r - r[:, 0])  # [N,]

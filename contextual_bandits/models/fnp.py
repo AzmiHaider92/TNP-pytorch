@@ -108,6 +108,7 @@ class FNP(nn.Module):
         batch_size = xc.shape[0]
         num_target = xt.shape[1]
         T = self.timesteps
+        T=32 # TODO: remove
         xc = xc.repeat((num_samples, 1, 1))
         yc = yc.repeat((num_samples, 1, 1))
         xt = torch.cat((xc, xt.repeat((num_samples, 1, 1))), dim=1)
